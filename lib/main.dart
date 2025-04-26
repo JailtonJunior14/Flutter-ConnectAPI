@@ -59,8 +59,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _msg = "";
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +76,14 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
             TextField(
-              controller: _usernameController,
+              controller: _username,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter your username',
               ),
             ),
             TextField(
-              controller: _passwordController,
+              controller: _password,
               decoration: const InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter your password',
@@ -91,22 +91,23 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                login();
+                cadastrar();
               },
-              child: const Text("login"),
+              child: const Text("cadastrar"),
             ),
             Text(_msg),
+            
           ],
         ),
       ),
     );
   }
 
-  void login() async {
-    String url = "http://localhost/231465/api-teste/login.php";
+  void cadastrar() async {
+    String url = "http://localhost:8000/cadastro.php";
     final Map<String, dynamic> queryParams = {
-      "username": _usernameController.text,
-      "password": _passwordController.text,
+      "nome": _username.text,
+      "senha": _password.text,
     };
     try {
       http.Response response = await http.get(
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         } else {
           setState(() {
-            _msg = "usuario ou senha invalidos";
+            _msg = "usuario ou senha invalido";
           });
         }
         print("Error : ${response.statusCode}");
